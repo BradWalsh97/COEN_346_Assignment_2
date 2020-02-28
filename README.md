@@ -36,21 +36,27 @@ indicates the process related to this event. “Paused” or “Finished” indi
 total, that is (Time2 – Time1) + (Time4 – Time3) = (2-1) +(4-3) = 1+1= 2.
 
 Implementation Requirements:
-• The processes (both scheduler and processes) must be simulated using threads. The scheduler
+
+•The processes (both scheduler and processes) must be simulated using threads. The scheduler
 should be able to resume each process and only one process should be running at a time (because
 the simulated system has only one CPU). This means that the simulated process (P1) should
 suspend its execution and give the CPU back to the scheduler thread, then the scheduler resumes
 the next simulated process (e.g. P2) based on the discussed scheduling policy. Each process is
 responsible to keep track of its total execution and inform the scheduler thread when it is finished.
 This process continues until all processes are done.
+
 • The program must work with arbitrary number of threads.
+
 • Note that the implementation should be done in Java or C++.
+
 • The assignment should be done in a group of two students. 
-3
+
+
 • The deliverable must be a .zip file which consists of:
 A well-commented code,
 The executable file of the assignment (e.g. example.exe).
 A report document. Do not include your code in your report
+
 • The report should be at least two pages with the following sections:
 Name of group members
 High level description of the code (description of the methods/functions/threads/data
