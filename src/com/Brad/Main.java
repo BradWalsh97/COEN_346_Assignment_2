@@ -1,4 +1,4 @@
-package com.BradCoen352;
+package com.Brad;
 
 public class Main {
 
