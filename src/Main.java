@@ -225,12 +225,15 @@ public class Main {
             //first we run round robin until the end of the waitQueue
             while(true){
                 //in the while loop, we run the process (and decrement by 10%) until its done, then go to the next process
-                if(j + 1 == readyQueue.size()) {//this signals end of ready queue
+
+                if(j + 1 == readyQueue.size() && (readyQueue.get(j).getStatus()=="FINISHED" )) {//this signals end of ready queue
+                    break;
+                }
+                else if(j + 1 == readyQueue.size()) {//this signals end of ready queue
                     System.out.println("IF 1");
                     readyQueue.get(j).setStatus(ProcessStatus.RESUMED);
                     printReadyQueueProcessStatus(readyQueue.get(j));
                     shortestFirst(readyQueue.get(readyQueue.size() - 1)); //thus run last one once
-                    break;
                 }
                 else if(readyQueue.get(j).getStatus().equals("Finished")) {
                     System.out.println("IF 2");
