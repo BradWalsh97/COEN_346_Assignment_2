@@ -133,11 +133,11 @@ public class Main {
         }
         private void shortestFirst(Process p){
             p.setStatus(ProcessStatus.RESUMED);
-            printProcessStatus(p);
+            printReadyQueueProcessStatus(p);
             currentTime+= ((readyQueue.get(j).getRunTime())*0.1);
             p.setRunTime(p.getRunTime() * 0.9);
             p.setStatus(ProcessStatus.PAUSED);
-            printProcessStatus(p);
+            printReadyQueueProcessStatus(p);
 
             //check if runtime is less than 0.01. If so, the process is finished.
             if(p.getRunTime() <= 0.01)
@@ -226,7 +226,7 @@ public class Main {
             while(true){
                 //in the while loop, we run the process (and decrement by 10%) until its done, then go to the next process
 
-                if(j + 1 == readyQueue.size() && (readyQueue.get(j).getStatus().equals(ProcessStatus.FINISHED.toString()) )) {//this signals end of ready queue
+                if(j + 1 == readyQueue.size() && (readyQueue.get(j).getStatus().equals("Finished"))) {//this signals end of ready queue
                     break;
                 }
                 else if(j + 1 == readyQueue.size()) {//this signals end of ready queue
