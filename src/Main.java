@@ -177,6 +177,7 @@ public class Main {
                 }
                 else if(waitingQueue.get(i).getStatus().equals("Finished")) {
                     printProcessStatus(waitingQueue.get(i)); //print that the process is done
+                    waitingQueue.get(i).setWaitTime(currentTime - ((double) waitingQueue.get(i).getArrivalTime()) - waitingQueue.get(i).getTotalRunTime());
                     i++; //if the process is done, we move on to the next one
                 }
                 else if(currentTime == waitingQueue.get(i).getArrivalTime()) {
@@ -227,6 +228,7 @@ public class Main {
                 //in the while loop, we run the process (and decrement by 10%) until its done, then go to the next process
 
                 if(j + 1 == readyQueue.size() && (readyQueue.get(j).getStatus().equals("Finished"))) {//this signals end of ready queue
+                    readyQueue.get(j).setWaitTime(currentTime - ((double) readyQueue.get(j).getArrivalTime()) - readyQueue.get(j).getTotalRunTime());
                     break;
                 }
                 else if(j + 1 == readyQueue.size()) {//this signals end of ready queue
@@ -237,6 +239,7 @@ public class Main {
                 }
                 else if(readyQueue.get(j).getStatus().equals("Finished")) {
                    // System.out.println("IF 2");
+                    readyQueue.get(j).setWaitTime(currentTime - ((double) readyQueue.get(j).getArrivalTime()) - readyQueue.get(j).getTotalRunTime());
                     printReadyQueueProcessStatus(readyQueue.get(j)); //print that the process is done
                     j++; //if the process is done, we move on to the next one
                 }
