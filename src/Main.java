@@ -44,10 +44,10 @@ public class Main {
 //        for (Process p :waitingQueue) {
 //            System.out.println("Process: " + p.getPID() + " "+ p.getArrivalTime());
 //        }
-        Collections.sort(waitingQueue, new SortByDuration());
+        Collections.sort(waitingQueue, new SortByArrival());
         System.out.println("=========Processes=========");
         for (Process p :waitingQueue) {
-            System.out.println("Process: " + p.getPID() + " Arrival Time: "+ p.getArrivalTime());
+            System.out.println("Process: " + p.getPID() + " Arrival Time: "+ p.getArrivalTime() + " Run Time: "+ p.getRunTime());
         }
         System.out.println("================Process Execution=================");
         scheduler.start();
@@ -108,7 +108,7 @@ public class Main {
         int processID;
         int arrivalTime;
         double runTime;
-        int currentTime;
+        double currentTime;
         int i = 0;
 
         public Scheduler(Process p) {
@@ -121,6 +121,20 @@ public class Main {
             p.setStatus(ProcessStatus.RESUMED);
             printProcessStatus(p);
             p.setRunTime(p.getRunTime() * 0.9);
+            currentTime+= (waitingQueue.get(i).getRunTime()/0.9)*0.1;
+            p.setStatus(ProcessStatus.PAUSED);
+
+            printProcessStatus(p);
+
+            //check if runtime is less than 0.01. If so, the process is finished.
+            if(p.getRunTime() <= 0.01)
+                p.setStatus(ProcessStatus.FINISHED);
+        }
+        private void shortestFirst(Process p){
+            p.setStatus(ProcessStatus.RESUMED);
+            printProcessStatus(p);
+            p.setRunTime(p.getRunTime() * 0.9);
+            currentTime+= (readyQueue.get(i).getRunTime()/0.9)*0.1;
             p.setStatus(ProcessStatus.PAUSED);
             printProcessStatus(p);
 
@@ -128,6 +142,7 @@ public class Main {
             if(p.getRunTime() <= 0.01)
                 p.setStatus(ProcessStatus.FINISHED);
         }
+
         private void printProcessStatus(Process p){
             System.out.println("Time " + currentTime + ", Proccess "
                     + p.getPID() + ", " + waitingQueue.get(i).getStatus()
@@ -161,22 +176,17 @@ public class Main {
                     waitingQueue.get(i).setStatus(ProcessStatus.STARTED);
                     printProcessStatus(waitingQueue.get(i));
                     oneRoundRobinRound(waitingQueue.get(i));
-                    currentTime++;
                 }
                 else if(currentTime < waitingQueue.get(i+1).getArrivalTime() && currentTime >= waitingQueue.get(i).getArrivalTime()) {
                     //waitingQueue.get(i).setStatus(ProcessStatus.RESUMED);
                     oneRoundRobinRound(waitingQueue.get(i));
-                    currentTime++;
                 }
                 else if(currentTime > waitingQueue.get(i).getArrivalTime()){
-                    i++;//move on to next process in waiting queue
                     readyQueue.add(waitingQueue.get(i));//add process to ready queue
-
+                    i++;//move on to next process in waiting queue
                 }
 
                 else
-                    currentTime++;
-
                 //increment wait time in ready queue
                 for (int j = i; j < waitingQueue.size() ; j++)
                     waitingQueue.get(j).setWaitTime(waitingQueue.get(j).getWaitTime() + 1);
@@ -201,6 +211,31 @@ public class Main {
             //now we run the shortest first.
             //The ready queue first needs to be sorted based on the shortest remaining run times.
             Collections.sort(readyQueue, new SortByDuration());
+
+            //first we run round robin until the end of the waitQueue
+            while(true){
+                //in the while loop, we run the process (and decrement by 10%) until its done, then go to the next process
+                if(i + 1 == readyQueue.size()) {//this signals end of ready queue
+                    readyQueue.get(i).setStatus(ProcessStatus.RESUMED);
+                    printProcessStatus(readyQueue.get(i));
+                    shortestFirst(readyQueue.get(readyQueue.size() - 1)); //thus run last one once
+                    break;
+                }
+                else if(readyQueue.get(i).getStatus().equals("Finished")) {
+                    printProcessStatus(readyQueue.get(i)); //print that the process is done
+                    i++; //if the process is done, we move on to the next one
+                }
+                else {
+                    readyQueue.get(i).start();
+                    shortestFirst(readyQueue.get(i));
+                }
+
+
+                //increment wait time in ready queue
+                for (int j = i; j < waitingQueue.size() ; j++)
+                    waitingQueue.get(j).setWaitTime(waitingQueue.get(j).getWaitTime() + 1);
+
+            }
 
             //now that its sorted
 
