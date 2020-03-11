@@ -145,13 +145,13 @@ public class Main {
         }
 
         private void printProcessStatus(Process p){
-            System.out.println("Time " + currentTime + ", Process "
+            System.out.println("Time " + format("%.3f",currentTime) + ", Process "
                     + p.getPID() + ", " + waitingQueue.get(i).getStatus()
             + ", remaining time " + format("%.3f",waitingQueue.get(i).getRunTime()));
         }
 
         private void printReadyQueueProcessStatus(Process p){
-            System.out.println("Time " + currentTime + ", Process "
+            System.out.println("Time " + format("%.3f",currentTime) + ", Process "
                     + p.getPID() + ", " + readyQueue.get(j).getStatus()
                     + ", remaining time " + format("%.3f",readyQueue.get(j).getRunTime()));
         }
@@ -226,22 +226,22 @@ public class Main {
             while(true){
                 //in the while loop, we run the process (and decrement by 10%) until its done, then go to the next process
 
-                if(j + 1 == readyQueue.size() && (readyQueue.get(j).getStatus().equals(ProcessStatus.FINISHED.toString()))) {//this signals end of ready queue
+                if(j + 1 == readyQueue.size() && (readyQueue.get(j).getStatus().equals(ProcessStatus.FINISHED.toString()) )) {//this signals end of ready queue
                     break;
                 }
                 else if(j + 1 == readyQueue.size()) {//this signals end of ready queue
-                    System.out.println("IF 1");
+                    //System.out.println("IF 1");
                     readyQueue.get(j).setStatus(ProcessStatus.RESUMED);
                     printReadyQueueProcessStatus(readyQueue.get(j));
                     shortestFirst(readyQueue.get(readyQueue.size() - 1)); //thus run last one once
                 }
                 else if(readyQueue.get(j).getStatus().equals("Finished")) {
-                    System.out.println("IF 2");
+                   // System.out.println("IF 2");
                     printReadyQueueProcessStatus(readyQueue.get(j)); //print that the process is done
                     j++; //if the process is done, we move on to the next one
                 }
                 else {
-                    System.out.println("IF 3");
+                    //System.out.println("IF 3");
                     shortestFirst(readyQueue.get(j));
                 }
 
