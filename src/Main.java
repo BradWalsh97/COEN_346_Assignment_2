@@ -110,6 +110,7 @@ public class Main {
         double runTime;
         double currentTime;
         int i = 0;
+        int j = 0;
 
         public Scheduler(Process p) {
             this.processID = p.getPID();
@@ -165,6 +166,7 @@ public class Main {
                     waitingQueue.get(i).setStatus(ProcessStatus.STARTED);
                     printProcessStatus(waitingQueue.get(i));
                     oneRoundRobinRound(waitingQueue.get(waitingQueue.size() - 1)); //thus run last one once
+                    readyQueue.add(waitingQueue.get(i));//add process to ready queue
                     break;
                 }
                 else if(waitingQueue.get(i).getStatus().equals("Finished")) {
@@ -187,6 +189,8 @@ public class Main {
                 }
 
                 else
+                    currentTime++;
+
                 //increment wait time in ready queue
                 for (int j = i; j < waitingQueue.size() ; j++)
                     waitingQueue.get(j).setWaitTime(waitingQueue.get(j).getWaitTime() + 1);
@@ -215,25 +219,27 @@ public class Main {
             //first we run round robin until the end of the waitQueue
             while(true){
                 //in the while loop, we run the process (and decrement by 10%) until its done, then go to the next process
-                if(i + 1 == readyQueue.size()) {//this signals end of ready queue
-                    readyQueue.get(i).setStatus(ProcessStatus.RESUMED);
-                    printProcessStatus(readyQueue.get(i));
+                if(j + 1 == readyQueue.size()) {//this signals end of ready queue
+                    System.out.println("IF 1");
+                    readyQueue.get(j).setStatus(ProcessStatus.RESUMED);
+                    printProcessStatus(readyQueue.get(j));
                     shortestFirst(readyQueue.get(readyQueue.size() - 1)); //thus run last one once
                     break;
                 }
-                else if(readyQueue.get(i).getStatus().equals("Finished")) {
-                    printProcessStatus(readyQueue.get(i)); //print that the process is done
-                    i++; //if the process is done, we move on to the next one
+                else if(readyQueue.get(j).getStatus().equals("Finished")) {
+                    System.out.println("IF 2");
+                    printProcessStatus(readyQueue.get(j)); //print that the process is done
+                    j++; //if the process is done, we move on to the next one
                 }
                 else {
-                    readyQueue.get(i).start();
-                    shortestFirst(readyQueue.get(i));
+                    System.out.println("IF 3");
+                    shortestFirst(readyQueue.get(j));
                 }
 
 
-                //increment wait time in ready queue
-                for (int j = i; j < waitingQueue.size() ; j++)
-                    waitingQueue.get(j).setWaitTime(waitingQueue.get(j).getWaitTime() + 1);
+//                //increment wait time in ready queue
+//                for (int j = i; j < waitingQueue.size() ; j++)
+//                    waitingQueue.get(j).setWaitTime(waitingQueue.get(j).getWaitTime() + 1);
 
             }
 
