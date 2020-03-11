@@ -1,15 +1,37 @@
 import java.io.BufferedWriter;
 
-public class Process {
-    private int id;
+public class Process extends Thread{
+
+    private int pid;
     private ProcessStatus status;
-    private int enterTime;
-    private int duration;
+    private int arrivalTime;
+    private double runTime;
+
+    private int waitTime; //amount of time process spends in waitingQueue
+
     private int counter = 0;
     private final Object lock = new Object();
     private boolean paused = false;
-    private Scheduler observerScheduler;
+    //private Scheduler observerScheduler;
     private BufferedWriter writer;
+    public Process( int id, int arrivalTime, int runTime) {
+        this.arrivalTime = arrivalTime;
+        this.runTime = runTime;
+        this.pid = id;
+        this.setStatus(ProcessStatus.WAITING);
+        this.writer = writer;
+
+        if (arrivalTime == 1) {
+            this.status = ProcessStatus.READY;
+        } else {
+            this.status = ProcessStatus.WAITING;
+        }
+    }
+
+    @Override
+    public void run() {
+
+    }
 
     private Thread thread = new Thread(() -> {
         while(true){
@@ -25,20 +47,36 @@ public class Process {
             }
         }
     });
-    public Process( int id, int enterTime, int duration) {
-        this.enterTime = enterTime;
-        this.duration = duration;
-        this.id = id;
-        this.writer = writer;
-
-        if (enterTime == 1) {
-            this.status = ProcessStatus.READY;
-        } else {
-            this.status = ProcessStatus.WAITING;
-        }
+    public int getWaitTime() {
+        return waitTime;
+    }
+    public void setWaitTime(int waitTime) {
+        this.waitTime = waitTime;
+    }
+    public double getRunTime() {
+        return runTime;
+    }
+    public void setRunTime(double runTime){
+        this.runTime = runTime;
+    }
+    public int getArrivalTime(){
+        return this.arrivalTime;
+    }
+    public void setArrivalTime(int a){
+        this.arrivalTime = a;
+    }
+    public int getPID() {
+        return pid;
+    }
+    public void setPID(int pid) {
+        this.pid = pid;
     }
 
-    public int getDuration() {
-        return duration;
+    public void setStatus(ProcessStatus stat){
+        this.status = stat;
     }
+    public String getStatus(){
+        return this.status.toString();
+    }
+
 }
