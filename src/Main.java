@@ -158,7 +158,7 @@ public class Main {
         private void printWaitTimes(){
             System.out.println("=======Wait Times=======");
             for (Process p : waitingQueue) {
-                System.out.println("Proccess " + p.getPID() + " wait time: " + p.getWaitTime());
+                System.out.println("Proccess " + p.getPID() + " wait time: " + format("%.2f", p.getWaitTime()));
             }
         }
 
