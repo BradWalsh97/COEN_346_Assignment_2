@@ -226,7 +226,7 @@ public class Main {
             while(true){
                 //in the while loop, we run the process (and decrement by 10%) until its done, then go to the next process
 
-                if(j + 1 == readyQueue.size() && (readyQueue.get(j).getStatus()=="FINISHED" )) {//this signals end of ready queue
+                if(j + 1 == readyQueue.size() && (readyQueue.get(j).getStatus().equals(ProcessStatus.FINISHED.toString()))) {//this signals end of ready queue
                     break;
                 }
                 else if(j + 1 == readyQueue.size()) {//this signals end of ready queue
