@@ -134,7 +134,7 @@ public class Main {
         private void shortestFirst(Process p){
             p.setStatus(ProcessStatus.RESUMED);
             printProcessStatus(p);
-            currentTime+= ((readyQueue.get(i).getRunTime())*0.1);
+            currentTime+= ((readyQueue.get(j).getRunTime())*0.1);
             p.setRunTime(p.getRunTime() * 0.9);
             p.setStatus(ProcessStatus.PAUSED);
             printProcessStatus(p);
