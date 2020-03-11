@@ -6,6 +6,7 @@ class SortByDuration implements Comparator<Process> {
         double aDur = a.getRunTime();
         double bDur = b.getRunTime();
         int compVal = Double.compare(aDur, bDur);
+        //return compVal;
         if(compVal != 0)
             return compVal;
         else{
