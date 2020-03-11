@@ -145,9 +145,15 @@ public class Main {
         }
 
         private void printProcessStatus(Process p){
-            System.out.println("Time " + currentTime + ", Proccess "
+            System.out.println("Time " + currentTime + ", Process "
                     + p.getPID() + ", " + waitingQueue.get(i).getStatus()
             + ", remaining time " + format("%.3f",waitingQueue.get(i).getRunTime()));
+        }
+
+        private void printReadyQueueProcessStatus(Process p){
+            System.out.println("Time " + currentTime + ", Process "
+                    + p.getPID() + ", " + readyQueue.get(j).getStatus()
+                    + ", remaining time " + format("%.3f",readyQueue.get(j).getRunTime()));
         }
         private void printWaitTimes(){
             System.out.println("=======Wait Times=======");
@@ -222,13 +228,13 @@ public class Main {
                 if(j + 1 == readyQueue.size()) {//this signals end of ready queue
                     System.out.println("IF 1");
                     readyQueue.get(j).setStatus(ProcessStatus.RESUMED);
-                    printProcessStatus(readyQueue.get(j));
+                    printReadyQueueProcessStatus(readyQueue.get(j));
                     shortestFirst(readyQueue.get(readyQueue.size() - 1)); //thus run last one once
                     break;
                 }
                 else if(readyQueue.get(j).getStatus().equals("Finished")) {
                     System.out.println("IF 2");
-                    printProcessStatus(readyQueue.get(j)); //print that the process is done
+                    printReadyQueueProcessStatus(readyQueue.get(j)); //print that the process is done
                     j++; //if the process is done, we move on to the next one
                 }
                 else {
